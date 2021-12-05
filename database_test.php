@@ -11,10 +11,12 @@ if ($CONN->connect_error) {
 
 mysqli_query($CONN, 'set names utf8');
 
-$NAME = $_POST['NAME'];//取得name值
-$SQL = "INSERT INTO goods (name) VALUES ('$NAME') ";//插入表格語法
-mysqli_query($CONN, $SQL) or die("錯誤訊息：".mysqli_error($CONN));//執行插入
-echo "資料插入成功！";//顯示訊息
+
+//$NAME = "1";
+    $NAME = $_POST['NAME'];//取得name值
+    $SQL = "INSERT INTO goods (goods_ID ,name) VALUES ('11','$NAME') ";
+    mysqli_query($CONN, $SQL) or die("錯誤訊息：".mysqli_error($CONN));//執行插入
+    echo "資料插入成功！";//顯示訊息
 
 //$sql = "SELECT goods_ID, name, cost, quantity FROM `goods`";
 //$result = $conn->query($sql);
@@ -30,5 +32,4 @@ echo "資料插入成功！";//顯示訊息
 //$conn->close();
 
     ?>
-
 
