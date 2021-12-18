@@ -38,10 +38,10 @@ else {
 
 
 switch ($fun){
-    case 'save':
-        $user = 31;
-        $pas = "password";
-        $cost = "cost";
+    case 'in':
+        $user = $_POST["username"];
+        $pas = $_POST["password"];
+        $cost = $_POST["cost"];
 
 
         $VALUE = $user . "," . $pas. "," .$cost ;
