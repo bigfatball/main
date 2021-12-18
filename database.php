@@ -30,7 +30,7 @@ header("Content-type:text/html;charset=utf-8");
 
 
 if(empty($_POST["function"])) {
-    $fun = "save";
+    $fun = "in";
 }
 else {
     $fun = $_POST["function"];
@@ -38,7 +38,7 @@ else {
 
 
 switch ($fun){
-    case 'in':
+    case 'save':
         $user = $_POST["username"];
         $pas = $_POST["password"];
         $cost = $_POST["cost"];
