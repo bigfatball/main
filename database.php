@@ -1,7 +1,7 @@
 <?php
 $hostname = "localhost";
 $username = "root";
-$password = "A@ss12345";
+$password = "";
 $dbname = "wms";
 // 連接 MySQL 資料庫伺服器
 $conn = new mysqli($hostname, $username, $password, $dbname);
@@ -82,5 +82,3 @@ switch ($fun){
 
 
     ?>
-
-
