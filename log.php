@@ -15,12 +15,18 @@ header("Content-type:text/html;charset=utf-8");
 //$sql = "INSERT INTO goods (neme) VALUES ('$name') ";//插入表格語法
 //mysqli_query($link, $sql) or die("錯誤訊息：".mysqli_error($link));//執行插入
 //echo "資料插入成功！";//顯示訊息
+if (empty($_POST["TIME"])){
+    $_POST["TIME"]="";
+    $_POST["TASKNAME"]="";
+    $_POST["DESCRIPTION"]="";
+    $_POST["VALUE"]="";
+    $_POST["TYPE"]="";
 
-$TIME="";
-$TASKNAME="";
-$DESCRIPTION="";
-$VALUE="";
-$TYPE="";
+
+}
+
+
+
 if ($_POST["TYPE"]="User action") {
     
     $TIME = $_POST["TIME"];
