@@ -1,65 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>DataTables Server-side Processing using PHP with MySQL + Ajax</title>
-<!-- DataTables CSS library -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"/>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<!-- DataTables JS library -->
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<style type="text/css">
-.bs-example{
-margin: 20px;
-}
-</style>
+<title>下拉式選單測試</title>
 </head>
 <body>
-<div class="bs-example">
-<div class="container">
-<div class="row">
-<div class="col-md-12">
-<div class="page-header clearfix">
-<h2 class="pull-left">Users List</h2>
-</div>
-<table id="usersListTable" class="display" style="width:100%">
-<thead>
-<tr>
-<th>invoice</th>
-<th>product</th>
-<th>customer</th>
-<th>status</th>
-<th>staff</th>
-<th>qty</th>
-
-</tr>
-</thead>
-<tfoot>
-<tr>
-<th>invoice</th>
-<th>product</th>
-<th>customer</th>
-<th>status</th>
-<th>staff</th>
-<th>qty</th>
-
-</tr>
-</tfoot>
-</table>
-</div>
-</div>        
-</div>
-</div>
+    <select id="shopList">
+    	<option></option>
+    </select>  
 </body>
-<script>
-$(document).ready(function(){
-$('#usersListTable').DataTable({
-"processing": true,
-"serverSide": true,
-"ajax": "test2.php"
-});
-});
-</script>
+<?php
+
+$hostname = "localhost";
+$username = "root";
+$password = "";
+$dbname = "warehouse";
+
+$conn = new mysqli($hostname, $username, $password, $dbname);
+
+$sql = "select * from customer;";
+$result = $conn->query($sql);
+
+
+
+
+if(!$result){
+   	echo "Execute SQL failed : ". mysql_error();
+	exit;
+}
+$shopCodeArr=array();     //用來存哪些選項的陣列
+$shopCount=0;
+while($rows=mysqli_fetch_array($result))
+{
+	$shopCodeArr[$shopCount]=$rows['customer'];
+	$cid[$shopCount]=$rows['cid'];
+	$shopCount++;
+}
+for($i=0;$i<count($shopCodeArr);$i++)
+{
+	echo "<script type=\"text/javascript\">";
+	echo "document.getElementById(\"shopList\").options[$i]=new Option(\"$shopCodeArr[$i]\",\"$cid[$i]\");";
+	echo "</script>";
+}
+?>
 </html>
