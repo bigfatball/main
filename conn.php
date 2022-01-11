@@ -81,7 +81,59 @@ switch ($FUN){
 
     
         break;
+
+        case "staff";
+        $SQL = "select sid,staff from staff";
+        $RESULT = $CONN->query($SQL);
+
+  
+// 輸出資料
+        while($ROW = $RESULT->fetch_assoc()) {
+            echo json_encode($ROW,JSON_UNESCAPED_UNICODE).' ';
+        }
+
+
+        break;
+    case "status";
+        
+        $SQL = "select sid,status from status";
+        $RESULT = $CONN->query($SQL);
+
+
+// 輸出資料
+        while($ROW = $RESULT->fetch_assoc()) {
+            echo json_encode($ROW,JSON_UNESCAPED_UNICODE)." ";
+        }
+        break;
+
+    case "product";
+        
+        $SQL = "select pid,product from product";
+        $RESULT = $CONN->query($SQL);
+
+
+// 輸出資料
+        while($ROW = $RESULT->fetch_assoc()) {
+            echo json_encode($ROW,JSON_UNESCAPED_UNICODE).'+';
+        }
+    break;
+
+    case "iid";
+        
+        $SQL = "select MAX(invoice_id) from inventory";
+        $RESULT = $CONN->query($SQL);
+
+
+// 輸出資料
+        while($ROW = $RESULT->fetch_assoc()) {
+            echo json_encode($ROW,JSON_UNESCAPED_UNICODE).' ';
+        }
+    break;
+    
     }
+
+    
+
         
 
 ?>

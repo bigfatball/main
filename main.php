@@ -62,7 +62,7 @@
             <ul class="navbar-nav" >
 
                 <li class="nav-item" >
-                    <a class="nav-link" href="#" style = "color:white" onclick = "show()">Link 1</a>
+                    <a class="nav-link" href="#" style = "color:white" onclick = "showfrom()">Link 1</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style = "color:white">Link 1</a>
@@ -84,7 +84,8 @@
 
 
 <div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;" >
-  <div>
+  <div class="row">
+      <div class="col-12">
     
     <input type="text" name="invoice" id="INVOICE" placeholder="invoice" />
     <input type="text" name="customer" id="CUSTOMER" placeholder="customer" />
@@ -92,17 +93,55 @@
     <input type="text" name="staff" id="STAFF" placeholder="staff" />
     <input type="text" name="product" id="PRODUCT" placeholder="product" />
     <input type="text" name="product_qty" id="PRODUCT_QTY" placeholder="product_qty" />
+    
+    
+     
 
-    <select id="shopList">
-    	<option></option>
-    </select> 
-    <select id="status">
-    	<option></option>
-    </select> 
+    
+
+    
     <input type="button"  onclick = "save()"  value="提交" />
     
   </div>
+
+
+  <div class ="row">
+      <div class = "col-1">
+  <select id="shopList">
+    	<option></option>
+    </select> 
 </div>
+</div>
+
+<div class ="row">
+<div class = "col-1">
+<select id="status">
+<div class = "col-1">
+    	<option></option>
+    </select>
+</div>
+</div>
+
+<div class ="row">
+<div class = "col-1">
+<select id="staff">
+    	<option></option>
+    </select> 
+</div>
+</div>
+
+<div class ="row">
+<div class = "col-1">
+<select id="product">
+    	<option value ="0"></option>
+    </select> 
+</div>
+  </div>
+</div>
+</div>
+</div>
+
+
 <div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;" >
   <div>
     <input type="text" name="username" id="UN" placeholder="請輸入使用者名稱" />
@@ -210,7 +249,7 @@ function save(){
 }
 
 
-function show(){
+function showfrom1(){
    
     var FUN = "customer"
     $.ajax({
@@ -219,27 +258,89 @@ function show(){
         data: {
             "FUN" : FUN
         },
-
         success: function (data){
             //取json中的值
-            
             var a = data.split(' ');
-
-            alert (a);
-            
-
-            
             for (var i = 0;a.length-1; i++) {
-                
-                document.getElementById("shopList").options[i]=new Option(JSON.parse(a[i]).customer,JSON.parse(a[i]).cid);
-
-               
+                document.getElementById("shopList").options[i]=new Option(JSON.parse(a[i]).customer,JSON.parse(a[i]).cid);     
         } 
-
         }
     })
+}
 
 
+function showfrom2(){
+   
+   var FUN = "staff"
+   $.ajax({
+       type: 'POST',
+       url: 'conn.php',
+       data: {
+           "FUN" : FUN
+       },
+       success: function (data){
+           //取json中的值
+           var a = data.split(' ');
+           for (var i = 0;a.length-1; i++) {
+               document.getElementById("staff").options[i]=new Option(JSON.parse(a[i]).staff,JSON.parse(a[i]).sid);     
+       } 
+       }
+   })
+}
+
+
+function showfrom3(){
+   
+   var FUN = "status"
+   $.ajax({
+       type: 'POST',
+       url: 'conn.php',
+       data: {
+           "FUN" : FUN
+       },
+       success: function (data){
+           //取json中的值
+           var a = data.split(' ');
+           for (var i = 0;a.length-1; i++) {
+               document.getElementById("status").options[i]=new Option(JSON.parse(a[i]).status,JSON.parse(a[i]).sid);     
+       } 
+       }
+   })
+}
+
+
+function showfrom4(){
+    alert ("輸入異常!");
+   var FUN = "product"
+   $.ajax({
+       type: 'POST',
+       url: 'conn.php',
+       data: {
+           "FUN" : FUN
+       },
+       success: function (data){
+           //取json中的值
+           var a = data.split('+');
+           for (var i = 0;a.length-1; i++) {
+               document.getElementById("product").options[i]=new Option(JSON.parse(a[i]).product,JSON.parse(a[i]).pid);     
+       } 
+       }
+   })
+}
+
+
+
+
+
+function showfrom(){
+    
+    showfrom1();
+    showfrom2();
+    showfrom3();
+    showfrom4();
+
+
+    
 }
 </script>
 </body>
