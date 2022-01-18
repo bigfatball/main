@@ -26,7 +26,7 @@
 </head>
 <body>
 
-
+<div style="display:none;" id = "BGMENU">
 
 <nav class="navbar navbar-dark bg-dark">
 
@@ -37,7 +37,7 @@
 
     <div class= "navigation">
     
-    <button type="button" class="btn btn-dark">
+    <button type="button" class="btn btn-dark" onclick ="save2()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-person-fill" viewBox="0 0 16 16">
         <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm-1 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 4c2.623 0 4.146.826 5 1.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1.245C3.854 11.825 5.377 11 8 11z"/>
     </svg>USER
@@ -57,7 +57,7 @@
     </div>
 
 
-    <div class="offcanvas-body">
+    <div class="offcanvas-body" id = "MENU">
         <nav class="navbar" style="background-color:black " >
             <ul class="navbar-nav" >
 
@@ -65,10 +65,10 @@
                     <a class="nav-link" href="#" style = "color:white" onclick = "showfrom()">Link 1</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style = "color:white">Link 1</a>
+                    <a class="nav-link" href="#" style = "color:white" id="123">Link 2</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style = "color:white">Link 1</a>
+                    <a class="nav-link" href="#" style = "color:white" >Link 1</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style = "color:white">Link 1</a>
@@ -80,10 +80,12 @@
 
 </div>
 
+</div>
 
 
 
-<div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;" >
+
+<div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px; display:none;"  id = "INVOICE_FROM">
   <div class="row">
       <div class="col-12">
     
@@ -101,6 +103,7 @@
 
     
     <input type="button"  onclick = "save()"  value="提交" />
+    <input type="button"  onclick = "save2()"  value="123" />
     
   </div>
 
@@ -142,7 +145,7 @@
 </div>
 
 
-<div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;" >
+<div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;display:none;"   id = "A">
   <div>
     <input type="text" name="username" id="UN" placeholder="請輸入使用者名稱" />
     <input type="text" name="username" id="UN" placeholder="請輸入使用者名稱" />
@@ -155,7 +158,7 @@
    
   </div>
 </div>
-<div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;" >
+<div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;display:none;"   id = "B">
   <div>
     <input type="text" name="username" id="UN" placeholder="請輸入使用者名稱" />
     <input type="text" name="username" id="UN" placeholder="請輸入使用者名稱" />
@@ -170,10 +173,28 @@
 </div>
 
 
+<div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;"   id = "LOGIN">
+  <div>
+  <label>account:</label>
+
+<input type="text" name="account" id="NAME" placeholder="product" />
+
+<label>password:</label>
+<input type="text" name="password" id="PASSWORD" placeholder="product_qty" />
+
+
+ 
 
 
 
-<div class="bs-example">
+
+<input type="button"  onclick = "login()"  value="提交" />
+   
+  </div>
+</div>
+
+
+<div class="bs-example" style="display:none;" id = "DATATABLE">
 <div class="container">
 <div class="row">
 <div class="col-md-12">
@@ -342,6 +363,107 @@ function showfrom(){
 
     
 }
+
+
+function save2(){
+    
+    var FUN = "save"
+    var e = document.getElementById("product");
+var strUser = e.options[e.selectedIndex].value;
+ 
+
+var e = document.getElementById("product");
+var strUser2 = e.options[e.selectedIndex].text;
+    alert (strUser);
+    alert (strUser2);
+}
+
+function login(){
+    document.getElementById("123").outertHTML= ""
+
+    
+}
+
+
+function login(){
+    
+    log("click","button resuock_form_sub click","null", "User action")
+    var FUN = "login"
+    $.ajax({
+        url:'conn.php',
+        type:'post',
+        data:{ "NAME": $("#NAME").val(),
+        "PASSWORD" : $("#PASSWORD").val(),
+        
+        "FUN" : FUN
+        },
+        dataType:"JSON",
+        success: function (data) {
+
+            alert (data["number"][0]);
+            var FUN = data["number"][0];
+            switch (FUN){
+                case '1':
+
+                    var DATATABLE = document.getElementById('DATATABLE');
+                    var BGMENU = document.getElementById('BGMENU');
+                    var INVOICE_FROM = document.getElementById('INVOICE_FROM');
+                    var A = document.getElementById('A');
+                    var B = document.getElementById('B');
+                    
+                    DATATABLE.style.display = 'block';
+                    BGMENU.style.display = 'block';
+                    INVOICE_FROM.style.display = 'block';
+                    A.style.display = 'block';
+                    B.style.display = 'block';
+
+                    LOGIN.style.display = 'none';
+
+                    break;
+                case '2':
+                    var DATATABLE = document.getElementById('DATATABLE');
+                    var BGMENU = document.getElementById('BGMENU');
+                    var INVOICE_FROM = document.getElementById('INVOICE_FROM');
+                    var A = document.getElementById('A');
+                    var B = document.getElementById('B');
+                    
+                    DATATABLE.style.display = 'block';
+                    BGMENU.style.display = 'block';
+                    INVOICE_FROM.style.display = 'block';
+                    A.style.display = 'block';
+                    B.style.display = 'block';
+                    LOGIN.style.display = 'none';
+                    break;
+            }
+            
+      } 
+    });
+}
+
+function log(TASKNAME, DESCRIPTION, VALUE, TYPE, FUN){
+    var now = new Date();
+    var YEAR = now.getFullYear(); //得到年份
+    var MONTH = now.getMonth()+1;//得到月份
+    var DATE = now.getDate();//得到日期
+
+    var HOUR= now.getHours();//得到小时数
+    var MINUTE= now.getMinutes();//得到分钟数
+    var SECOND= now.getSeconds();//得到秒数
+    var TIME = YEAR + "/" + MONTH + "/" + DATE +" " + HOUR+ ":" + MINUTE +  ":" + SECOND
+    var LOG = "LOG";
+    $.ajax({
+	      url:'log.php',
+	      type:'post',
+	      data:{"TIME":TIME,"TASKNAME":TASKNAME, "DESCRIPTION":DESCRIPTION, "VALUE":VALUE,"TYPE":TYPE, "FUN":LOG},   //拼裝json陣列
+	      // data:$("#fm").serialize(),   //直接從form表單中取出陣列
+	      dataType:"JSON",
+
+                    
+
+	    });
+
+  }
+
 </script>
 </body>
 </html>

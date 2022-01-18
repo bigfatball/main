@@ -129,6 +129,32 @@ switch ($FUN){
             echo json_encode($ROW,JSON_UNESCAPED_UNICODE).' ';
         }
     break;
+
+    case "login";
+        
+        $NAME = $_POST["NAME"];
+        $PASSWORD = $_POST["PASSWORD"];
+
+        $VALUE = $NAME . "," . $PASSWORD;
+        
+        $TIME = date("Y-m-d H:i:s");
+        $TASKNAME = "login function";
+        $DESCRIPTION = "save data to db";
+        $TYPE = "system";
+        require_once('log.php');
+        SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+
+
+        $SQL = "SELECT number FROM `user` WHERE name = '$NAME' and password = '$PASSWORD';";
+
+        
+        
+        $RESULT = mysqli_query($CONN, $SQL);
+        $ROW = mysqli_fetch_assoc($RESULT);
+
+        echo json_encode($ROW,JSON_UNESCAPED_UNICODE);
+        
+    break;
     
     }
 
