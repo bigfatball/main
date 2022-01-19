@@ -25,7 +25,7 @@ else {
 
 
 switch ($FUN){
-
+    ## 儲存資料至SQL
     case 'save':
         $INVOICE = $_POST["INVOICE"];
         $PRODUCT_QTY = $_POST["PRODUCT_QTY"];
@@ -39,6 +39,7 @@ switch ($FUN){
         mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
         break;
 
+    ## 讀取資料至datatable
     case 'in';
         $SQL = "SELECT * FROM `inventory.info`";
         $RESULT = mysqli_query($CONN, $SQL);
@@ -66,7 +67,7 @@ switch ($FUN){
         echo json_encode($RESPONSE);
         break;
 
-
+    ## 讀取customer資料
     case "customer";
 
 
@@ -81,8 +82,8 @@ switch ($FUN){
 
     
         break;
-
-        case "staff";
+    ## 讀取staff資料
+    case "staff";
         $SQL = "select sid,staff from staff";
         $RESULT = $CONN->query($SQL);
 
@@ -94,6 +95,8 @@ switch ($FUN){
 
 
         break;
+
+    ## 讀取status資料
     case "status";
         
         $SQL = "select sid,status from status";
@@ -105,7 +108,8 @@ switch ($FUN){
             echo json_encode($ROW,JSON_UNESCAPED_UNICODE)." ";
         }
         break;
-
+        
+    ## 讀取product資料
     case "product";
         
         $SQL = "select pid,product from product";
@@ -117,7 +121,9 @@ switch ($FUN){
             echo json_encode($ROW,JSON_UNESCAPED_UNICODE).'+';
         }
     break;
+    
 
+    ## 讀取最大的單號
     case "iid";
         
         $SQL = "select MAX(invoice_id) from inventory";
@@ -130,6 +136,8 @@ switch ($FUN){
         }
     break;
 
+
+    ## 找查帳號的權限
     case "login";
         
         $NAME = $_POST["NAME"];

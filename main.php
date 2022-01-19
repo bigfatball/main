@@ -26,6 +26,7 @@
 </head>
 <body>
 
+<!-- 菜單的頂部 -->
 <div style="display:none;" id = "BGMENU">
 
 <nav class="navbar navbar-dark bg-dark">
@@ -46,7 +47,7 @@
 </div>
 </nav>
 
-
+<!-- 菜單的側面 -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="menu" aria-labelledby="menu" style="background-color:black ">
 
     <div class="offcanvas-header">
@@ -62,16 +63,16 @@
             <ul class="navbar-nav" >
 
                 <li class="nav-item" >
-                    <a class="nav-link" href="#" style = "color:white" onclick = "showfrom()">Link 1</a>
+                    <a class="nav-link" href="#" style = "color:white" onclick = "showfrom()">in</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style = "color:white" id="123">Link 2</a>
+                    <a class="nav-link" href="#" style = "color:white" >out</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style = "color:white" >Link 1</a>
+                    <a class="nav-link" href="#" style = "color:white" >hold</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style = "color:white">Link 1</a>
+                    <a class="nav-link" href="#" style = "color:white" id="123" >data show</a>
                 </li>
             </ul>
         </nav>
@@ -84,7 +85,7 @@
 
 
 
-
+<!-- 入貨表單 -->
 <div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px; display:none;"  id = "INVOICE_FROM">
   <div class="row">
       <div class="col-12">
@@ -145,6 +146,8 @@
 </div>
 
 
+
+<!-- 出貨表單 -->
 <div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;display:none;"   id = "A">
   <div>
     <input type="text" name="username" id="UN" placeholder="請輸入使用者名稱" />
@@ -158,6 +161,9 @@
    
   </div>
 </div>
+
+
+<!-- hold貨表單 -->
 <div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;display:none;"   id = "B">
   <div>
     <input type="text" name="username" id="UN" placeholder="請輸入使用者名稱" />
@@ -173,6 +179,7 @@
 </div>
 
 
+<!-- login表單 -->
 <div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px;"   id = "LOGIN">
   <div>
   <label>account:</label>
@@ -182,18 +189,15 @@
 <label>password:</label>
 <input type="text" name="password" id="PASSWORD" placeholder="product_qty" />
 
-
- 
-
-
-
-
 <input type="button"  onclick = "login()"  value="提交" />
    
   </div>
 </div>
 
 
+
+
+<!-- datatable -->
 <div class="bs-example" style="display:none;" id = "DATATABLE">
 <div class="container">
 <div class="row">
@@ -224,6 +228,7 @@
 <script>
 
 
+// load data to datatable
 $(document).ready(function(){
     $('#usersListTable').DataTable( {
         "processing": true,
@@ -245,7 +250,7 @@ $(document).ready(function(){
             });
         });
 
-
+// save data to datatable
 function save(){
     
     var FUN = "save"
@@ -270,6 +275,7 @@ function save(){
 }
 
 
+// customer 下拉選單
 function showfrom1(){
    
     var FUN = "customer"
@@ -289,7 +295,7 @@ function showfrom1(){
     })
 }
 
-
+// staff 下拉選單
 function showfrom2(){
    
    var FUN = "staff"
@@ -309,7 +315,7 @@ function showfrom2(){
    })
 }
 
-
+// status 下拉選單
 function showfrom3(){
    
    var FUN = "status"
@@ -329,7 +335,7 @@ function showfrom3(){
    })
 }
 
-
+// product 下拉選單
 function showfrom4(){
     alert ("輸入異常!");
    var FUN = "product"
@@ -352,7 +358,7 @@ function showfrom4(){
 
 
 
-
+// menu in load function
 function showfrom(){
     
     showfrom1();
@@ -384,7 +390,7 @@ function login(){
     
 }
 
-
+// login
 function login(){
     
     log("click","button resuock_form_sub click","null", "User action")
@@ -426,6 +432,8 @@ function login(){
                     var INVOICE_FROM = document.getElementById('INVOICE_FROM');
                     var A = document.getElementById('A');
                     var B = document.getElementById('B');
+                    var C = document.getElementById('123');
+
                     
                     DATATABLE.style.display = 'block';
                     BGMENU.style.display = 'block';
@@ -433,6 +441,7 @@ function login(){
                     A.style.display = 'block';
                     B.style.display = 'block';
                     LOGIN.style.display = 'none';
+                    C.style.display = 'none';
                     break;
             }
             
@@ -440,6 +449,8 @@ function login(){
     });
 }
 
+
+// log function
 function log(TASKNAME, DESCRIPTION, VALUE, TYPE, FUN){
     var now = new Date();
     var YEAR = now.getFullYear(); //得到年份
