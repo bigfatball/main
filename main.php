@@ -26,8 +26,8 @@
 </head>
 <body>
 
-<!-- 菜單的頂部 -->
-<div style="display:none;" id = "BGMENU">
+<!-- 菜單的頂部 style="display:none;" -->
+<div  id = "BGMENU">
 
 <nav class="navbar navbar-dark bg-dark">
 
@@ -108,12 +108,14 @@
     
   </div>
 
-
+<label id = "iid"></label>
   <div class ="row">
       <div class = "col-1">
-  <select id="shopList">
+  <select id="customer">  
     	<option></option>
     </select> 
+
+    
 </div>
 </div>
 
@@ -136,9 +138,13 @@
 
 <div class ="row">
 <div class = "col-1">
-<select id="product">
-    	<option value ="0"></option>
+<select id="product" onchange="showqty()">
+        <option>請選擇你最愛的寵物</option>
+    	
     </select> 
+
+    <label id = "qty"></label>
+
 </div>
   </div>
 </div>
@@ -252,7 +258,7 @@ $(document).ready(function(){
 
 // save data to datatable
 function save(){
-    
+    var pid = $("#product").val();
     var FUN = "save"
     $.ajax({
         url:'conn.php',
@@ -289,7 +295,7 @@ function showfrom1(){
             //取json中的值
             var a = data.split(' ');
             for (var i = 0;a.length-1; i++) {
-                document.getElementById("shopList").options[i]=new Option(JSON.parse(a[i]).customer,JSON.parse(a[i]).cid);     
+                document.getElementById("customer").options[i]=new Option(JSON.parse(a[i]).customer,JSON.parse(a[i]).cid);     
         } 
         }
     })
@@ -349,22 +355,43 @@ function showfrom4(){
            //取json中的值
            var a = data.split('+');
            for (var i = 0;a.length-1; i++) {
-               document.getElementById("product").options[i]=new Option(JSON.parse(a[i]).product,JSON.parse(a[i]).pid);     
+               document.getElementById("product").options[i+1]=new Option(JSON.parse(a[i]).product,JSON.parse(a[i]).pid);     
+               
        } 
+       }
+   })
+}
+
+function showfrom5() {
+   
+   var FUN = "iid"
+   $.ajax({
+       type: 'POST',
+       url: 'conn.php',
+       data: {
+           "FUN" : FUN
+       },
+       success: function (data){
+           //取json中的值
+
+           var a = data.split(' ');
+           var id = JSON.parse(a[0]).iid ;
+           document.getElementById('iid').innerHTML = 'Invoice ID: ' + id ;
+             
+       
        }
    })
 }
 
 
 
-
 // menu in load function
 function showfrom(){
-    
     showfrom1();
     showfrom2();
     showfrom3();
     showfrom4();
+    showfrom5();
 
 
     
@@ -384,11 +411,7 @@ var strUser2 = e.options[e.selectedIndex].text;
     alert (strUser2);
 }
 
-function login(){
-    document.getElementById("123").outertHTML= ""
 
-    
-}
 
 // login
 function login(){
@@ -474,6 +497,35 @@ function log(TASKNAME, DESCRIPTION, VALUE, TYPE, FUN){
 	    });
 
   }
+
+
+function showqty(){
+    var FUN = "qty"
+   $.ajax({
+       type: 'POST',
+       url: 'conn.php',
+       data: {
+           "FUN" : FUN
+       },
+       success: function (data){
+           //取json中的值
+
+           var a = data.split(' ');
+           
+           var pid = $("#product").val();
+           
+            
+            document.getElementById('qty').innerHTML = 'Current quantity: ' +JSON.parse(a[pid-1]).product_qty ;
+       
+       }
+   })
+
+
+
+}
+
+   
+
 
 </script>
 </body>

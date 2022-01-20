@@ -16,7 +16,7 @@ if (!$CONN){
 
 
 if(empty($_POST["FUN"])) {
-    $FUN = "in";
+    $FUN = "iid";
 }
 else {
     $FUN = $_POST["FUN"];
@@ -34,7 +34,7 @@ switch ($FUN){
         $STAFF = $_POST["STAFF"];
         $PRODUCT = $_POST["PRODUCT"];
 
-        $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
+        $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty_temp) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
 
         mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
         break;
@@ -126,7 +126,7 @@ switch ($FUN){
     ## 讀取最大的單號
     case "iid";
         
-        $SQL = "select MAX(invoice_id) from inventory";
+        $SQL = "select MAX(invoice_id) +1 AS iid from inventory";
         $RESULT = $CONN->query($SQL);
 
 
@@ -163,6 +163,20 @@ switch ($FUN){
         echo json_encode($ROW,JSON_UNESCAPED_UNICODE);
         
     break;
+
+
+    case "qty";
+        
+    $SQL = "select pid,product_qty  from product";
+    $RESULT = $CONN->query($SQL);
+
+
+// 輸出資料
+    while($ROW = $RESULT->fetch_assoc()) {
+        echo json_encode($ROW,JSON_UNESCAPED_UNICODE).' ';
+    }
+break;
+
     
     }
 
