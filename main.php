@@ -16,12 +16,18 @@
     <!-- datatable -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
       <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
       <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-
       <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css"/>
+    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+
+
+      
     
 </head>
 <body>
@@ -214,12 +220,13 @@
 <table id="usersListTable" class="display" style="width:100%">
 <thead>
 <tr>
-<th>invoice</th>
-<th>product</th>
+<th>invoice_id</th>
 <th>customer</th>
+<th>product</th>
 <th>status</th>
 <th>staff</th>
 <th>qty</th>
+<th>qty_temp</th>
 </tr>
 </thead>
 
@@ -235,7 +242,7 @@
 
 
 // load data to datatable
-$(document).ready(function(){
+$(document).ready(function() {
     $('#usersListTable').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -244,17 +251,16 @@ $(document).ready(function(){
             "type": "POST"
         },
         "columns": [
-            { "data": "PRODUCT" },
-            { "data": "CUSTOMER" },
-            { "data": "STATUS" },
-            { "data": "STAFF" },
-            { "data": "QTY" },
-            { "data": "QTY_TEMP" }
-
-
-                ]
-            });
-        });
+            { "data": "invoice_id" },
+            { "data": "customer" },
+            { "data": "product" },
+            { "data": "status" },
+            { "data": "staff" },
+            { "data": "qty" },
+            { "data": "qty_temp" }
+        ]
+    } );
+} );
 
 // save data to datatable
 function save(){

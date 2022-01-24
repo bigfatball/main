@@ -16,7 +16,7 @@ if (!$CONN){
 
 
 if(empty($_POST["FUN"])) {
-    $FUN = "iid";
+    $FUN = "in";
 }
 else {
     $FUN = $_POST["FUN"];
@@ -41,31 +41,46 @@ switch ($FUN){
 
     ## 讀取資料至datatable
     case 'in';
-        $SQL = "SELECT * FROM `inventory.info`";
-        $RESULT = mysqli_query($CONN, $SQL);
-        $DATA = array();
+    $table = 'inventory.info';
+ 
+    // Table's primary key
+    $primaryKey = 'invoice_id';
+     
+    // Array of database columns which should be read and sent back to DataTables.
+    // The `db` parameter represents the column name in the database, while the `dt`
+    // parameter represents the DataTables column identifier. In this case object
+    // parameter names
+    $columns = array(
+        array( 'db' => 'invoice_id', 'dt' => 'invoice_id' ),
+        array( 'db' => 'customer',  'dt' => 'customer' ),
+        array( 'db' => 'product',   'dt' => 'product' ),
+        array( 'db' => 'status',     'dt' => 'status' ),
+        array( 'db' => 'staff',     'dt' => 'staff' ),
+        array(  'db' => 'qty',     'dt' => 'qty' ),
+        array(  'db' => 'qty_temp',     'dt' => 'qty_temp' )
+    );
+     
+    // SQL server connection information
+    $sql_details = array(
+        'user' => 'root',
+        'pass' => 'A@ss12345',
+        'db'   => 'warehouse',
+        'host' => '127.0.0.1'
+    );
+     
+     
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * If you just want to use the basic configuration for DataTables with PHP
+     * server-side, there is no need to edit below this line.
+     */
+     
+    require( 'ssp.class.php' );
+     
+    echo json_encode(
+        SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns )
+    );
     
-        while ($ROW = mysqli_fetch_assoc($RESULT)) {
-            $DATA[] = array(
-                "PRODUCT"=>$ROW['product'],
-                "CUSTOMER"=>$ROW['customer'],
-                "STATUS"=>$ROW['STATUS'],
-                "STAFF"=>$ROW['staff'],
-                "QTY"=>$ROW['qty'],
-                "QTY_TEMP"=>$ROW['qty_temp']
-            );
-        }
-    
-        ## Response
-        $RESPONSE = array(
-            "draw" => "1",
-            "recordsTotal" => "3",
-            "recordsFiltered" => "3",
-            "data" => $DATA
-        );
-    
-        echo json_encode($RESPONSE);
-        break;
+    break;
 
     ## 讀取customer資料
     case "customer";
