@@ -70,11 +70,7 @@
   <div class="row">
       <div class="col-12">
     
-    <input type="text" name="invoice" id="INVOICE" placeholder="invoice" />
-    <input type="text" name="customer" id="CUSTOMER" placeholder="customer" />
-    <input type="text" name="status" id="STATUS" placeholder="status" />
-    <input type="text" name="staff" id="STAFF" placeholder="staff" />
-    <input type="text" name="product" id="PRODUCT" placeholder="product" />
+    
     <input type="text" name="product_qty" id="PRODUCT_QTY" placeholder="product_qty" />
     
     
@@ -89,7 +85,7 @@
   <div class ="row">
       <div class = "col-1">
   <select id="customer">  
-    	<option></option>
+    	<option>請選擇</option>
     </select> 
     
 </div>
@@ -98,21 +94,21 @@
 <div class = "col-1">
 <select id="status">
 <div class = "col-1">
-    	<option></option>
+    	<option>請選擇</option>
     </select>
 </div>
 </div>
 <div class ="row">
 <div class = "col-1">
 <select id="staff">
-    	<option></option>
+    	<option>請選擇</option>
     </select> 
 </div>
 </div>
 <div class ="row">
 <div class = "col-1">
 <select id="product" onchange="showqty()">
-        <option>請選擇你最愛的寵物</option>
+        <option>請選擇</option>
     	
     </select> 
     <label id = "qty"></label>
@@ -160,6 +156,8 @@
    
   </div>
 </div>
+<input type="text" name="password" id="no_iid" />
+
 <!-- datatable -->
 <div class="bs-example" style="display:none;" id = "DATATABLE">
 <div class="container">
@@ -212,7 +210,7 @@
 } );
 // save data to datatable
 function save(){
-    var pid = $("#product").val();
+    var iid = $("#no_iid").val();
     var FUN = "save"
     $.ajax({
         url:'conn.php',
@@ -232,6 +230,47 @@ function save(){
       } 
     });
 }
+
+
+function save2(){
+    
+    var FUN = "save"
+    var PRODUCT = document.getElementById("product");
+    var PRODUCT_V = PRODUCT.options[PRODUCT.selectedIndex].value;
+    var PRODUCT_T = PRODUCT.options[PRODUCT.selectedIndex].text;
+
+    var STAFF = document.getElementById("staff");
+    var STAFF_V = STAFF.options[STAFF.selectedIndex].value;
+    var STAFF_T = STAFF.options[STAFF.selectedIndex].text;
+
+    var CUSTOMER = document.getElementById("staff");
+    var CUSTOMER_V = CUSTOMER.options[CUSTOMER.selectedIndex].value;
+    var CUSTOMER_T = CUSTOMER.options[CUSTOMER.selectedIndex].text;
+
+
+    var iid = $("#no_iid").val();
+    alert("1232122123!");
+    $.ajax({
+        url:'conn.php',
+        type:'post',
+        data:{ "INVOICE": iid,
+        "PRODUCT_QTY" : $("#PRODUCT_QTY").val(),
+        "CUSTOMER": customer_v,
+        "STATUS": $("#STATUS").val(),
+        "STAFF": staff_v,
+        "PRODUCT" : product_v,
+        "FUN" : FUN
+        },
+        dataType:"JSON",
+        success: function () {
+        
+            alert("輸入異常!");
+      } ,
+      
+    });
+
+
+}
 // customer 下拉選單
 function showfrom1(){
    
@@ -246,7 +285,7 @@ function showfrom1(){
             //取json中的值
             var a = data.split(' ');
             for (var i = 0;a.length-1; i++) {
-                document.getElementById("customer").options[i]=new Option(JSON.parse(a[i]).customer,JSON.parse(a[i]).cid);     
+                document.getElementById("customer").options[i+1]=new Option(JSON.parse(a[i]).customer,JSON.parse(a[i]).cid);     
         } 
         }
     })
@@ -265,7 +304,7 @@ function showfrom2(){
            //取json中的值
            var a = data.split(' ');
            for (var i = 0;a.length-1; i++) {
-               document.getElementById("staff").options[i]=new Option(JSON.parse(a[i]).staff,JSON.parse(a[i]).sid);     
+               document.getElementById("staff").options[i+1]=new Option(JSON.parse(a[i]).staff,JSON.parse(a[i]).sid);     
        } 
        }
    })
@@ -282,9 +321,9 @@ function showfrom3(){
        },
        success: function (data){
            //取json中的值
-           var a = data.split(' ');
+           var a = data.split('+');
            for (var i = 0;a.length-1; i++) {
-               document.getElementById("status").options[i]=new Option(JSON.parse(a[i]).status,JSON.parse(a[i]).sid);     
+               document.getElementById("status").options[i+1]=new Option(JSON.parse(a[i]).status,JSON.parse(a[i]).sid);     
        } 
        }
    })
@@ -320,10 +359,10 @@ function showfrom5() {
        },
        success: function (data){
            //取json中的值
-           var a = data.split(' ');
-           var id = JSON.parse(a[0]).iid ;
-           document.getElementById('iid').innerHTML = 'Invoice ID: ' + id ;
-             
+            var a = data.split(' ');
+            var id = JSON.parse(a[0]).iid ;
+            document.getElementById('iid').innerHTML = 'Invoice ID: ' + id ;
+            document.getElementById('no_iid').value = id;
        
        }
    })
@@ -337,17 +376,7 @@ function showfrom(){
     showfrom5();
     
 }
-function save2(){
-    
-    var FUN = "save"
-    var e = document.getElementById("product");
-var strUser = e.options[e.selectedIndex].value;
- 
-var e = document.getElementById("product");
-var strUser2 = e.options[e.selectedIndex].text;
-    alert (strUser);
-    alert (strUser2);
-}
+
 // login
 function login(){
     

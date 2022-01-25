@@ -121,7 +121,7 @@ break;
 
 // 輸出資料
         while($ROW = $RESULT->fetch_assoc()) {
-            echo json_encode($ROW,JSON_UNESCAPED_UNICODE)." ";
+            echo json_encode($ROW,JSON_UNESCAPED_UNICODE)."+";
         }
         break;
         
