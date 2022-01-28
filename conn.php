@@ -33,12 +33,133 @@ switch ($FUN){
         $STATUS = $_POST["STATUS"];
         $STAFF = $_POST["STAFF"];
         $PRODUCT = $_POST["PRODUCT"];
+        
+        switch ($STATUS){
+            case '1':
+                $VALUE = $INVOICE . " ," . $PRODUCT_QTY . " ,".$CUSTOMER. " ," .$STATUS. " ," .$STAFF . " ," .$PRODUCT;
+        
+                $TIME = date("Y-m-d H:i:s");
+                $TASKNAME = "login function";
+                $DESCRIPTION = "case 1";
+                $TYPE = "system";
+                require_once('log.php');
+                SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
 
-        $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty_temp) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
 
-        mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
-        break;
+                $SQL = "SELECT product_qty FROM product WHERE pid = '$PRODUCT'";
+                $RESULT = $CONN->query($SQL);
+        
+                if ($RESULT->num_rows > 0) {
+            // 輸出資料
+                $ROW = $RESULT->fetch_assoc();
+                $QTY = intval($ROW['product_qty']);
+                $PRODUCT_QTY = intval($PRODUCT_QTY);
+                $NEW_QTY = $QTY + $PRODUCT_QTY;
 
+                $VALUE =  $QTY . " ,".$NEW_QTY. " ," . $NEW_QTY;
+        
+                $TIME = date("Y-m-d H:i:s");
+                $TASKNAME = "login function";
+                $DESCRIPTION = "case 2";
+                $TYPE = "system";
+                require_once('log.php');
+                SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+                
+                $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty_temp) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
+
+                mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+
+
+
+                $SQL = "UPDATE product SET product_qty ='$NEW_QTY' WHERE pid = '$PRODUCT' ";
+                mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+                break;
+                }
+            case '2':
+                $VALUE = $INVOICE . " ," . $PRODUCT_QTY . " ,".$CUSTOMER. " ," .$STATUS. " ," .$STAFF . " ," .$PRODUCT;
+        
+                $TIME = date("Y-m-d H:i:s");
+                $TASKNAME = "login function";
+                $DESCRIPTION = "case 1";
+                $TYPE = "system";
+                require_once('log.php');
+                SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+
+
+                $SQL = "SELECT product_qty FROM product WHERE pid = '$PRODUCT'";
+                $RESULT = $CONN->query($SQL);
+        
+                if ($RESULT->num_rows > 0) {
+            // 輸出資料
+                $ROW = $RESULT->fetch_assoc();
+                $QTY = intval($ROW['product_qty']);
+                $PRODUCT_QTY = intval($PRODUCT_QTY);
+                $NEW_QTY = $QTY - $PRODUCT_QTY;
+
+                $VALUE =  $QTY . " ,".$NEW_QTY. " ," . $NEW_QTY;
+        
+                $TIME = date("Y-m-d H:i:s");
+                $TASKNAME = "login function";
+                $DESCRIPTION = "case 2";
+                $TYPE = "system";
+                require_once('log.php');
+                SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+                
+                $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty_temp) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
+
+                mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+
+
+
+                $SQL = "UPDATE product SET product_qty ='$NEW_QTY' WHERE pid = '$PRODUCT' ";
+                mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+                break;
+                }
+            break;
+
+            $VALUE = $INVOICE . " ," . $PRODUCT_QTY . " ,".$CUSTOMER. " ," .$STATUS. " ," .$STAFF . " ," .$PRODUCT;
+        
+            $TIME = date("Y-m-d H:i:s");
+            $TASKNAME = "login function";
+            $DESCRIPTION = "case 1";
+            $TYPE = "system";
+            require_once('log.php');
+            SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+
+
+            $SQL = "SELECT product_qty FROM product WHERE pid = '$PRODUCT'";
+            $RESULT = $CONN->query($SQL);
+    
+            if ($RESULT->num_rows > 0) {
+        // 輸出資料
+            $ROW = $RESULT->fetch_assoc();
+            $QTY = intval($ROW['product_qty']);
+            $PRODUCT_QTY = intval($PRODUCT_QTY);
+            $NEW_QTY = $QTY - $PRODUCT_QTY;
+
+            $VALUE =  $QTY . " ,".$NEW_QTY. " ," . $NEW_QTY;
+    
+            $TIME = date("Y-m-d H:i:s");
+            $TASKNAME = "login function";
+            $DESCRIPTION = "case 2";
+            $TYPE = "system";
+            require_once('log.php');
+            SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+            
+            $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty_temp) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
+
+            mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+
+
+
+            $SQL = "UPDATE product SET product_qty ='$NEW_QTY' WHERE pid = '$PRODUCT' ";
+            mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+            break;
+            }
+            case '3':
+            break;
+        }
+      break;
     ## 讀取資料至datatable
     case 'in';
     $table = 'inventory.info';
@@ -195,7 +316,7 @@ break;
     
     }
 
-    
+
 
         
 

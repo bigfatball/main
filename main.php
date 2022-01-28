@@ -25,8 +25,21 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
 
+    <!-- EXCEL -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    
 
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
       
     
 </head>
@@ -44,7 +57,8 @@
 
     <div class= "navigation">
     
-    <button type="button" class="btn btn-dark" onclick ="save2()">
+    <button type="button" class="btn btn-dark" >
+
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-person-fill" viewBox="0 0 16 16">
         <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm-1 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 4c2.623 0 4.146.826 5 1.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1.245C3.854 11.825 5.377 11 8 11z"/>
     </svg>USER
@@ -72,10 +86,10 @@
                     <a class="nav-link" href="#" style = "color:white" onclick = "showfrom()">in</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style = "color:white" >out</a>
+                    <a class="nav-link" href="#" style = "color:white" onclick ="showfrom_2()" >out</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style = "color:white" >hold</a>
+                    <a class="nav-link" href="#" style = "color:white" onclick= "showfrom_3()" >hold</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style = "color:white" id="123" >data show</a>
@@ -95,22 +109,19 @@
 <div style="border-width:3px;border-style:solid;border-color:#D3D3D3 ;padding:25px; margin:10px; border-radius:10px; display:none;"  id = "INVOICE_FROM">
   <div class="row">
       <div class="col-12">
+
     
-    <input type="text" name="invoice" id="INVOICE" placeholder="invoice" />
-    <input type="text" name="customer" id="CUSTOMER" placeholder="customer" />
-    <input type="text" name="status" id="STATUS" placeholder="status" />
-    <input type="text" name="staff" id="STAFF" placeholder="staff" />
-    <input type="text" name="product" id="PRODUCT" placeholder="product" />
+ 
     <input type="text" name="product_qty" id="PRODUCT_QTY" placeholder="product_qty" />
     
-    
-     
+    <button type="button" onclick = "additem()" >
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+</svg>
 
-    
-
+</button>
     
     <input type="button"  onclick = "save()"  value="提交" />
-    <input type="button"  onclick = "save2()"  value="123" />
     
   </div>
 
@@ -150,7 +161,8 @@
     </select> 
 
     <label id = "qty"></label>
-
+    <input type="text" name="password" id="no_iid" />
+    <input type="text" name="status" id="STATUS" placeholder="status" />
 </div>
   </div>
 </div>
@@ -258,35 +270,62 @@ $(document).ready(function() {
             { "data": "staff" },
             { "data": "qty" },
             { "data": "qty_temp" }
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
         ]
     } );
 } );
 
+
+
+
 // save data to datatable
+
 function save(){
-    var pid = $("#product").val();
+    
     var FUN = "save"
+    var PRODUCT = document.getElementById("product");
+    var PRODUCT_V = PRODUCT.options[PRODUCT.selectedIndex].value;
+    var PRODUCT_T = PRODUCT.options[PRODUCT.selectedIndex].text;
+    var STAFF = document.getElementById("staff");
+    var STAFF_V = STAFF.options[STAFF.selectedIndex].value;
+    var STAFF_T = STAFF.options[STAFF.selectedIndex].text;
+    var CUSTOMER = document.getElementById("customer");
+    var CUSTOMER_V = CUSTOMER.options[CUSTOMER.selectedIndex].value;
+    var CUSTOMER_T = CUSTOMER.options[CUSTOMER.selectedIndex].text;
+    var iid = $("#no_iid").val();
+    var STATUS = $("#STATUS").val();
+
+    alert( "iid " + iid);
+    alert($("status " + "#status").val());
+    
+    alert("CUSTOMER_V " + CUSTOMER_V);
+    alert($("product_qty " + "#product_qty").val());
+    alert("STAFF_V " + STAFF_V);
+    alert("PRODUCT_V " + PRODUCT_V);
     $.ajax({
         url:'conn.php',
         type:'post',
-        data:{ "INVOICE": $("#INVOICE").val(),
+        data:{ "INVOICE": iid,
         "PRODUCT_QTY" : $("#PRODUCT_QTY").val(),
-        "CUSTOMER": $("#CUSTOMER").val(),
-        "STATUS": $("#STATUS").val(),
-        "STAFF": $("#STAFF").val(),
-        "PRODUCT" : $("#PRODUCT").val(),
+        "CUSTOMER": CUSTOMER_V,
+        "STATUS": STATUS,
+        "STAFF": STAFF_V,
+        "PRODUCT" : PRODUCT_V,
         "FUN" : FUN
         },
         dataType:"JSON",
         success: function () {
-      
+        
             alert("輸入異常!");
 
+
       } 
+      
     });
 }
-
-
 // customer 下拉選單
 function showfrom1(){
    
@@ -384,7 +423,7 @@ function showfrom5() {
            var id = JSON.parse(a[0]).iid ;
            document.getElementById('iid').innerHTML = 'Invoice ID: ' + id ;
              
-       
+           document.getElementById('no_iid').value = id;
        }
    })
 }
@@ -400,23 +439,31 @@ function showfrom(){
     showfrom5();
 
 
-    
+    document.getElementById('STATUS').value = 1;
 }
 
 
-function save2(){
-    
-    var FUN = "save"
-    var e = document.getElementById("product");
-var strUser = e.options[e.selectedIndex].value;
- 
+function showfrom_2(){
+    showfrom1();
+    showfrom2();
+    showfrom3();
+    showfrom4();
+    showfrom5();
 
-var e = document.getElementById("product");
-var strUser2 = e.options[e.selectedIndex].text;
-    alert (strUser);
-    alert (strUser2);
+
+    document.getElementById('STATUS').value = 2;
 }
 
+function showfrom_3(){
+    showfrom1();
+    showfrom2();
+    showfrom3();
+    showfrom4();
+    showfrom5();
+
+
+    document.getElementById('STATUS').value = 2;
+}
 
 
 // login
@@ -525,6 +572,12 @@ function showqty(){
        
        }
    })
+
+
+
+}
+
+function additem(){
 
 
 
