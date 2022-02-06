@@ -33,55 +33,175 @@ switch ($FUN){
         $STATUS = $_POST["STATUS"];
         $STAFF = $_POST["STAFF"];
         $PRODUCT = $_POST["PRODUCT"];
+        
+        switch ($STATUS){
+            case '1':
+                $VALUE = $INVOICE . " ," . $PRODUCT_QTY . " ,".$CUSTOMER. " ," .$STATUS. " ," .$STAFF . " ," .$PRODUCT;
+        
+                $TIME = date("Y-m-d H:i:s");
+                $TASKNAME = "login function";
+                $DESCRIPTION = "case 1";
+                $TYPE = "system";
+                require_once('log.php');
+                SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
 
-        $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty_temp) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
 
-        mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
-        break;
+                $SQL = "SELECT product_qty FROM product WHERE pid = '$PRODUCT'";
+                $RESULT = $CONN->query($SQL);
+        
+                if ($RESULT->num_rows > 0) {
+            // 輸出資料
+                $ROW = $RESULT->fetch_assoc();
+                $QTY = intval($ROW['product_qty']);
+                $PRODUCT_QTY = intval($PRODUCT_QTY);
+                $NEW_QTY = $QTY + $PRODUCT_QTY;
 
+                $VALUE =  $QTY . " ,".$NEW_QTY. " ," . $NEW_QTY;
+        
+                $TIME = date("Y-m-d H:i:s");
+                $TASKNAME = "login function";
+                $DESCRIPTION = "case 2";
+                $TYPE = "system";
+                require_once('log.php');
+                SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+                
+                $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty_temp) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
+
+                mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+
+
+
+                $SQL = "UPDATE product SET product_qty ='$NEW_QTY' WHERE pid = '$PRODUCT' ";
+                mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+                break;
+                }
+            case '2':
+                $VALUE = $INVOICE . " ," . $PRODUCT_QTY . " ,".$CUSTOMER. " ," .$STATUS. " ," .$STAFF . " ," .$PRODUCT;
+        
+                $TIME = date("Y-m-d H:i:s");
+                $TASKNAME = "login function";
+                $DESCRIPTION = "case 1";
+                $TYPE = "system";
+                require_once('log.php');
+                SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+
+
+                $SQL = "SELECT product_qty FROM product WHERE pid = '$PRODUCT'";
+                $RESULT = $CONN->query($SQL);
+        
+                if ($RESULT->num_rows > 0) {
+            // 輸出資料
+                $ROW = $RESULT->fetch_assoc();
+                $QTY = intval($ROW['product_qty']);
+                $PRODUCT_QTY = intval($PRODUCT_QTY);
+                $NEW_QTY = $QTY - $PRODUCT_QTY;
+
+                $VALUE =  $QTY . " ,".$NEW_QTY. " ," . $NEW_QTY;
+        
+                $TIME = date("Y-m-d H:i:s");
+                $TASKNAME = "login function";
+                $DESCRIPTION = "case 2";
+                $TYPE = "system";
+                require_once('log.php');
+                SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+                
+                $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty_temp) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
+
+                mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+
+
+
+                $SQL = "UPDATE product SET product_qty ='$NEW_QTY' WHERE pid = '$PRODUCT' ";
+                mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+                break;
+                }
+            break;
+
+            $VALUE = $INVOICE . " ," . $PRODUCT_QTY . " ,".$CUSTOMER. " ," .$STATUS. " ," .$STAFF . " ," .$PRODUCT;
+        
+            $TIME = date("Y-m-d H:i:s");
+            $TASKNAME = "login function";
+            $DESCRIPTION = "case 1";
+            $TYPE = "system";
+            require_once('log.php');
+            SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+
+
+            $SQL = "SELECT product_qty FROM product WHERE pid = '$PRODUCT'";
+            $RESULT = $CONN->query($SQL);
+    
+            if ($RESULT->num_rows > 0) {
+        // 輸出資料
+            $ROW = $RESULT->fetch_assoc();
+            $QTY = intval($ROW['product_qty']);
+            $PRODUCT_QTY = intval($PRODUCT_QTY);
+            $NEW_QTY = $QTY - $PRODUCT_QTY;
+
+            $VALUE =  $QTY . " ,".$NEW_QTY. " ," . $NEW_QTY;
+    
+            $TIME = date("Y-m-d H:i:s");
+            $TASKNAME = "login function";
+            $DESCRIPTION = "case 2";
+            $TYPE = "system";
+            require_once('log.php');
+            SAVE_LOG($TIME,$TASKNAME ,$DESCRIPTION,$VALUE ,$TYPE);
+            
+            $SQL = "INSERT INTO inventory(invoice_id, product_id, customer_id, status_id, staff_id, qty_temp) VALUES ('$INVOICE','$PRODUCT','$CUSTOMER','$STATUS','$STAFF','$PRODUCT_QTY')";
+
+            mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+
+
+
+            $SQL = "UPDATE product SET product_qty ='$NEW_QTY' WHERE pid = '$PRODUCT' ";
+            mysqli_query($CONN,$SQL) or die("fail messenger:".mysqli_error($CONN));
+            break;
+            }
+            case '3':
+            break;
+        }
+      break;
     ## 讀取資料至datatable
     case 'in';
-
-$table = 'inventory.info';
+    $table = 'inventory.info';
  
-// Table's primary key
-$primaryKey = 'invoice_id';
- 
-// Array of database columns which should be read and sent back to DataTables.
-// The `db` parameter represents the column name in the database, while the `dt`
-// parameter represents the DataTables column identifier. In this case object
-// parameter names
-$columns = array(
-    array( 'db' => 'invoice_id', 'dt' => 'invoice_id' ),
-    array( 'db' => 'customer',  'dt' => 'customer' ),
-    array( 'db' => 'product',   'dt' => 'product' ),
-    array( 'db' => 'status',     'dt' => 'status' ),
-    array( 'db' => 'staff',     'dt' => 'staff' ),
-    array(  'db' => 'qty',     'dt' => 'qty' ),
-    array(  'db' => 'qty_temp',     'dt' => 'qty_temp' )
-);
- 
-// SQL server connection information
-$sql_details = array(
-    'user' => 'root',
-    'pass' => 'A@ss12345',
-    'db'   => 'warehouse',
-    'host' => '127.0.0.1'
-);
- 
- 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * If you just want to use the basic configuration for DataTables with PHP
- * server-side, there is no need to edit below this line.
- */
- 
-require( 'ssp.class.php' );
- 
-echo json_encode(
-    SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns )
-);
-
-break;
+    // Table's primary key
+    $primaryKey = 'invoice_id';
+     
+    // Array of database columns which should be read and sent back to DataTables.
+    // The `db` parameter represents the column name in the database, while the `dt`
+    // parameter represents the DataTables column identifier. In this case object
+    // parameter names
+    $columns = array(
+        array( 'db' => 'invoice_id', 'dt' => 'invoice_id' ),
+        array( 'db' => 'customer',  'dt' => 'customer' ),
+        array( 'db' => 'product',   'dt' => 'product' ),
+        array( 'db' => 'status',     'dt' => 'status' ),
+        array( 'db' => 'staff',     'dt' => 'staff' ),
+        array(  'db' => 'qty',     'dt' => 'qty' ),
+        array(  'db' => 'qty_temp',     'dt' => 'qty_temp' )
+    );
+     
+    // SQL server connection information
+    $sql_details = array(
+        'user' => 'root',
+        'pass' => 'A@ss12345',
+        'db'   => 'warehouse',
+        'host' => '127.0.0.1'
+    );
+     
+     
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * If you just want to use the basic configuration for DataTables with PHP
+     * server-side, there is no need to edit below this line.
+     */
+     
+    require( 'ssp.class.php' );
+     
+    echo json_encode(
+        SSP::simple( $_POST, $sql_details, $table, $primaryKey, $columns )
+    );
+    
+    break;
 
     ## 讀取customer資料
     case "customer";
@@ -121,7 +241,7 @@ break;
 
 // 輸出資料
         while($ROW = $RESULT->fetch_assoc()) {
-            echo json_encode($ROW,JSON_UNESCAPED_UNICODE)."+";
+            echo json_encode($ROW,JSON_UNESCAPED_UNICODE)." ";
         }
         break;
         
@@ -156,8 +276,8 @@ break;
     ## 找查帳號的權限
     case "login";
         
-        $NAME = "abc";
-        $PASSWORD = "123";
+        $NAME = $_POST["NAME"];
+        $PASSWORD = $_POST["PASSWORD"];
 
         $VALUE = $NAME . "," . $PASSWORD;
         
@@ -196,8 +316,9 @@ break;
     
     }
 
-    
+
 
         
 
 ?>
+
