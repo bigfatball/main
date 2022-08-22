@@ -72,14 +72,19 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
         //},
             Ok(ws::Message::Binary(bin)) => //ctx.binary(bin),
             {
-                let mut file = File::create("test.txt").unwrap();
+                let mut file = File::create("test_data.zip").unwrap();
                 file.write_all(&bin).unwrap();
             },
             
             Ok(ws::Message::Close(reason)) => {
                 ctx.close(reason);
                 ctx.stop();
-            }
+            },
+
+            Ok(ws::Message::Continuation(blob)) => {
+                let mut file = File::create("669.pdf").unwrap();
+                file.write_all(&blob).unwrap();
+            },
             _ => ctx.stop(),
         }
     }
