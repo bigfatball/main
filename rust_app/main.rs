@@ -21,6 +21,7 @@ enum Msg {
     Files(Vec<File>),
     Submit,   
     LoadedBuffer(String,Vec<u8>),
+    Hello,
 }   
 
 struct Model {
@@ -104,6 +105,11 @@ impl Component for Model {
                 
                 true
             }
+
+            Msg::Hello=>{
+                app::greet("anthony");
+                true
+            }
         }
     }
 
@@ -131,6 +137,7 @@ impl Component for Model {
                 })}/>
                 <button onclick={link.callback(|_| Msg::Conn)}>{ "open" }</button>
                 <button onclick={link.callback(|_| Msg::Submit)}>{"submit"}</button>
+                <button onclick={link.callback(|_| Msg::Hello)}>{"say hello"}</button>
                 <input type="text" id="tb1" value={"First value"}/>
             
             </div>
