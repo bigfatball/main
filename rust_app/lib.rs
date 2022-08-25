@@ -87,6 +87,10 @@ pub fn start_websocket(file:File,i:i32) -> Result<(), JsValue> {
     let ws = WebSocket::new("ws://192.168.65.131:8080")?;
     let clone_ws = ws.clone();
     clone_ws.set_binary_type(web_sys::BinaryType::Blob);
+    
+    let onmessage_callback = Closure::<dyn FnMut(_)>::new(move |e:MessageEvent|{
+
+    });
 
     let onopen_callback = Closure::<dyn FnMut()>::new(move || {
              console_log!("socket opened");

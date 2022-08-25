@@ -83,9 +83,9 @@ impl Component for Model {
                 //let file_size:f64 = files_clone.size();
                 //let file_num:u64 = file_size / 50000;
                 log::info!("files_clone: {:?}", files_clone.size());
-                // for i in 0..845 {
-                //     let start =i*60000;
-                //     let end = start + 60000;
+                // for i in 0..2{
+                //     let start =i*102400;
+                //     let end = start + 102400;
                 //     let slice = files_clone.slice_with_i32_and_i32(start, end).unwrap();
                 //     log::info!("slice: {:?}", slice.size());
                 //     app::start_websocket(slice,i);
