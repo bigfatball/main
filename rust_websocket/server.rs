@@ -1,24 +1,36 @@
+use std::ops::Add;
+use std::path::Path;
 use std::time::{Duration, Instant};
 
 use actix::prelude::*;
 use actix_web_actors::ws;
 
-const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 
-const CLIENT_TIMEOUT: Duration = Duration::from_secs(10);
+
+const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(500000000);
+
+const CLIENT_TIMEOUT: Duration = Duration::from_secs(10000000);
 
 use std::fs::File;
+use std::fs::OpenOptions;
+use std::io::Write;
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::io::Read;
 use actix_web::web::Bytes;
 pub struct MyWebSocket{
     hb: Instant,
+
 }
+
+
 
 impl MyWebSocket{
     pub fn new() -> Self {
-        Self { hb: Instant::now()}
+        Self { 
+            hb: Instant::now(),
+            
+        }
     }
 
     fn hb(&self, ctx:&mut <Self as Actor>::Context){
@@ -42,7 +54,13 @@ impl Actor for MyWebSocket{
     /// Method is called on actor start. We start the heartbeat process here.
     fn started(&mut self, ctx: &mut Self::Context) {
         self.hb(ctx);
+
+        let addr = ctx.address();
+
+        
     }
+
+
 }
 
 
@@ -59,7 +77,9 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
             Ok(ws::Message::Pong(_)) => {
                 self.hb = Instant::now();
             }
-            Ok(ws::Message::Text(text)) => ctx.text(text),
+            Ok(ws::Message::Text(text)) => {
+                ctx.text("this is text");
+                ctx.text(text);},
             
             //{
                 // dd if=/dev/zero of=static/10mb bs=1M count=10
@@ -72,7 +92,13 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
         //},
             Ok(ws::Message::Binary(bin)) => //ctx.binary(bin),
             {
-                let mut file = File::create("test_data.zip").unwrap();
+                //if Path::new("./try.txt").exists() == false{
+                //    let mut file = File::create("try.txt").unwrap();
+                //    file.write_all(&bin).unwrap();
+                //}else{
+
+                //}
+                let mut file = File::create("firefox.zip").unwrap();
                 file.write_all(&bin).unwrap();
             },
             
@@ -81,10 +107,43 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                 ctx.stop();
             },
 
-            Ok(ws::Message::Continuation(blob)) => {
-                let mut file = File::create("669.pdf").unwrap();
-                file.write_all(&blob).unwrap();
+            Ok(ws::Message::Continuation(blob)) => 
+            {
+                //let text = actix_http::ws::Item::Last(blob);
+                //let blob_clown = blob::Last;
+                //ctx.text(blob_clown.into());
+                
+                ctx.ping(b"this is continuation frame");
+                match blob {
+                    actix_http::ws::Item::FirstText(a) => 
+                    {
+                        let mut file = File::create("firefox.zip").unwrap();
+                        file.write_all(&a).unwrap();
+                    },
+                    actix_http::ws::Item::FirstBinary(b) => {
+                        let mut file = File::create("firefox.zip").unwrap();
+                        file.write_all(&b).unwrap();
+                    },
+                    actix_http::ws::Item::Continue(c) => {
+                        let mut file = OpenOptions::new().append(true).open("firefox.zip").expect("write failed");
+                        file.write_all(&c).unwrap();
+                    },
+                    actix_http::ws::Item::Last(d) => {
+                        let mut file = OpenOptions::new().append(true).open("firefox.zip").expect("write failed");
+                        file.write_all(&d).unwrap();
+                    },
+                }
+                
             },
+            // {
+            //     self.send_message("test");
+            // }
+            // {
+            //     let mut file = File::create("669.pdf").unwrap();
+            //     let file_data = blob.into(); 
+            //     // let file_data_clown = a.into(file_data);
+            //     ctx.text(file_data);
+            // },
             _ => ctx.stop(),
         }
     }

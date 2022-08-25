@@ -11,7 +11,8 @@ use actix_http;
 async fn websocket(req: HttpRequest, stream: web::Payload) -> Result<HttpResponse, Error> {
     ws::WsResponseBuilder::new(MyWebSocket::new(),&req,stream)
     .codec(actix_http::ws::Codec::new())
-    .frame_size(1073741824)
+    .frame_size(10737418240)
+    //.frame_size(65536)
     .protocols(&["A","B"])
     .start()
     //start(MyWebSocket::new(), &req, stream)
