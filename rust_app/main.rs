@@ -80,6 +80,11 @@ impl Component for Model {
             Msg::Files(files) => {
                 log::info!("File function{:?}",files);
                 let files_clone = files[0].clone();
+                let file_name = files_clone.name();
+
+                let files_clone2 = files[0].clone();
+                let file_name2 = files_clone2.name();
+                let file_name3 = format!("{}2",file_name2);
                 //let file_size:f64 = files_clone.size();
                 //let file_num:u64 = file_size / 50000;
                 log::info!("files_clone: {:?}", files_clone.size());
@@ -91,7 +96,10 @@ impl Component for Model {
                 //     app::start_websocket(slice,i);
                    
                 // }
-                app::start_websocket(files_clone,0);
+                log::info!("files: {:?}", file_name);
+                log::info!("files3: {:?}", file_name3);
+                app::start_websocket(files_clone, file_name);
+                app::start_websocket(files_clone2, file_name3);
                 true
             }
 
