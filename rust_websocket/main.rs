@@ -37,10 +37,14 @@ async fn main() -> std::io::Result<()> {
         .service(
             web::resource("/").route(web::get().to(websocket))
         )
+        
 
     })
     .workers(4)
     .bind(("192.168.65.131", 8080))?
     .run()
     .await
+
+
+
 }
