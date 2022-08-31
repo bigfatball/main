@@ -15,6 +15,9 @@ use web_sys::File;
 use gloo_file::Blob;
 
 
+use std::thread;
+use std::time::Duration;
+
 enum Msg {
     AddOne,
     Conn,
@@ -98,8 +101,15 @@ impl Component for Model {
                 // }
                 log::info!("files: {:?}", file_name);
                 log::info!("files3: {:?}", file_name3);
+
+                // thread::spawn(||{
+                //     app::start_websocket(files_clone, file_name);
+                //     thread::sleep(Duration::from_millis(1));
+                // });
+                // app::start_websocket(files_clone2, file_name3);
+                
+
                 app::start_websocket(files_clone, file_name);
-                app::start_websocket(files_clone2, file_name3);
                 true
             }
 
